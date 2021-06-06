@@ -22,32 +22,77 @@ class CalculatorCanvas extends StatefulWidget {
 }
 
 class _CalculatorCanvasState extends State<CalculatorCanvas> {
-  int _userInputValue1 = 0;
-  int _userInputValue2 = 0;
-  String _userMathOperation = "+";
-  int _result = 0;
+  String _userInputValue1 = "";
+  String _userInputValue2 = "";
+  String _userMathOperation = "";
+  String _result = "0";
 
-  void _showClickedValue(){
+  void _getUserInput(String userInput){
+    String currently = "";
+    if(userInput == "+") {
+      _userMathOperation = "+";
+      currently = "+";
+    }
+    else if(userInput == "-") {
+      _userMathOperation = "-";
+      currently = "-";
+      userInput = "";
+    }
+    else if(userInput == "*"){
+      _userMathOperation = "*";
+      currently = "*";
+      userInput = "";
+    }
+    else if(userInput == "/"){
+      _userMathOperation = "/";
+      currently = "/";
+      userInput = "";
+    }
+    else if(userInput == "=") {
+      if (_userMathOperation == "+") {
+        debugPrint("++++++");
+        currently = (int.parse(_userInputValue1) + int.parse(_userInputValue2)).toString();
+        _userMathOperation = "=";
+      }
+      else if (_userMathOperation == "-") {
+        debugPrint("-------");
+        debugPrint(_userInputValue1 + "-" + _userInputValue2);
+        currently = (int.parse(_userInputValue1) - int.parse(_userInputValue2)).toString();
+        debugPrint(currently);
+        _userMathOperation = "=";
+      }
+      else if (_userMathOperation == "*") {
+        currently = (int.parse(_userInputValue1) * int.parse(_userInputValue2)).toString();
+        _userMathOperation = "=";
+      }
+      else if (_userMathOperation == "/") {
+        currently = (int.parse(_userInputValue1) / int.parse(_userInputValue2)).toString();
+        _userMathOperation = "=";
+      }
+    }
+
+
+    if(_userMathOperation == "") {
+      _userInputValue1 = _userInputValue1 + userInput;
+      currently = _userInputValue1;
+    }
+    else if (_userMathOperation != "=") {
+      _userInputValue2 = _userInputValue2 + userInput;
+      debugPrint("2:" + _userInputValue2);
+      currently = _userInputValue2;
+    }
+
+    if(userInput == "C"){
+      _userInputValue1 = "";
+      _userInputValue2 = "";
+      _userMathOperation = "";
+      currently = "";
+    }
+
     setState(() {
-      _result = 9;
+      _result = currently;
     });
   }
-
-//  void _addValues(){
-////    _result = _userInputValue1 + _userInputValue2;
-////  }
-////
-////  void _subtractValues(){
-////    _result = _userInputValue1 - _userInputValue2;
-////  }
-////
-////  void _multiplyValues(){
-////    _result = _userInputValue1 * _userInputValue2;
-////  }
-////
-//////  void _divideValues(){
-//////    _result = _userInputValue1 / _userInputValue2;
-//////  }
 
   @override
   Widget build(BuildContext context){
@@ -71,36 +116,37 @@ class _CalculatorCanvasState extends State<CalculatorCanvas> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "9")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "8")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "7")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "+")),
+              ElevatedButton(onPressed: () => _getUserInput("9"), child: KeyButton(buttonName: "9")),
+              ElevatedButton(onPressed: () => _getUserInput("8"), child: KeyButton(buttonName: "8")),
+              ElevatedButton(onPressed: () => _getUserInput("7"), child: KeyButton(buttonName: "7")),
+              ElevatedButton(onPressed: () => _getUserInput("+"), child: KeyButton(buttonName: "+")),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "6")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "5")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "4")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "-")),
+              ElevatedButton(onPressed: () => _getUserInput("6"), child: KeyButton(buttonName: "6")),
+              ElevatedButton(onPressed: () => _getUserInput("5"), child: KeyButton(buttonName: "5")),
+              ElevatedButton(onPressed: () => _getUserInput("4"), child: KeyButton(buttonName: "4")),
+              ElevatedButton(onPressed: () => _getUserInput("-"), child: KeyButton(buttonName: "-")),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "3")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "2")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "1")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "*")),
+              ElevatedButton(onPressed: () => _getUserInput("3"), child: KeyButton(buttonName: "3")),
+              ElevatedButton(onPressed: () => _getUserInput("2"), child: KeyButton(buttonName: "2")),
+              ElevatedButton(onPressed: () => _getUserInput("1"), child: KeyButton(buttonName: "1")),
+              ElevatedButton(onPressed: () => _getUserInput("*"), child: KeyButton(buttonName: "*")),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "0")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "=")),
-              ElevatedButton(onPressed: _showClickedValue, child: KeyButton(buttonName: "/")),
+              ElevatedButton(onPressed: () => _getUserInput("0"), child: KeyButton(buttonName: "0")),
+              ElevatedButton(onPressed: () => _getUserInput("="), child: KeyButton(buttonName: "=")),
+              ElevatedButton(onPressed: () => _getUserInput("C"), child: KeyButton(buttonName: "C")),
+              ElevatedButton(onPressed: () => _getUserInput("/"), child: KeyButton(buttonName: "/")),
             ],
           ),
 
