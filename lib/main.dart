@@ -27,6 +27,10 @@ class _CalculatorCanvasState extends State<CalculatorCanvas> {
   String _userMathOperation = "";
   String _result = "0";
 
+  void showNumber(){
+    print('print me');
+  }
+
   void _getUserInput(String userInput){
     String currently = "";
     if(userInput == "+") {
@@ -95,81 +99,55 @@ class _CalculatorCanvasState extends State<CalculatorCanvas> {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.appTitle),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-
-          Container(
-            margin: const EdgeInsets.all(10.0),
-            color: Colors.amber[600],
-            height: 70.0,
-            child: Text('$_result',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            alignment: Alignment.centerRight,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(onPressed: () => _getUserInput("9"), child: KeyButton(buttonName: "9")),
-              ElevatedButton(onPressed: () => _getUserInput("8"), child: KeyButton(buttonName: "8")),
-              ElevatedButton(onPressed: () => _getUserInput("7"), child: KeyButton(buttonName: "7")),
-              ElevatedButton(onPressed: () => _getUserInput("+"), child: KeyButton(buttonName: "+")),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(onPressed: () => _getUserInput("6"), child: KeyButton(buttonName: "6")),
-              ElevatedButton(onPressed: () => _getUserInput("5"), child: KeyButton(buttonName: "5")),
-              ElevatedButton(onPressed: () => _getUserInput("4"), child: KeyButton(buttonName: "4")),
-              ElevatedButton(onPressed: () => _getUserInput("-"), child: KeyButton(buttonName: "-")),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(onPressed: () => _getUserInput("3"), child: KeyButton(buttonName: "3")),
-              ElevatedButton(onPressed: () => _getUserInput("2"), child: KeyButton(buttonName: "2")),
-              ElevatedButton(onPressed: () => _getUserInput("1"), child: KeyButton(buttonName: "1")),
-              ElevatedButton(onPressed: () => _getUserInput("*"), child: KeyButton(buttonName: "*")),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(onPressed: () => _getUserInput("0"), child: KeyButton(buttonName: "0")),
-              ElevatedButton(onPressed: () => _getUserInput("="), child: KeyButton(buttonName: "=")),
-              ElevatedButton(onPressed: () => _getUserInput("C"), child: KeyButton(buttonName: "C")),
-              ElevatedButton(onPressed: () => _getUserInput("/"), child: KeyButton(buttonName: "/")),
-            ],
-          ),
-
-        ],
+      body: SafeArea(
+        child: GridView.count(
+          crossAxisCount: 4,
+          children: <Widget>[
+            KeyButton(buttonName: "9", callback: showNumber),
+            KeyButton(buttonName: "8", callback: showNumber),
+            KeyButton(buttonName: "7", callback: showNumber),
+            KeyButton(buttonName: "+", callback: showNumber),
+            KeyButton(buttonName: "6", callback: showNumber),
+            KeyButton(buttonName: "5", callback: showNumber),
+            KeyButton(buttonName: "4", callback: showNumber),
+            KeyButton(buttonName: "-", callback: showNumber),
+            KeyButton(buttonName: "3", callback: showNumber),
+            KeyButton(buttonName: "2", callback: showNumber),
+            KeyButton(buttonName: "1", callback: showNumber),
+            KeyButton(buttonName: "*", callback: showNumber),
+            KeyButton(buttonName: "0", callback: showNumber),
+            KeyButton(buttonName: "=", callback: showNumber),
+            KeyButton(buttonName: "C", callback: showNumber),
+            KeyButton(buttonName: "/", callback: showNumber),
+          ],
+        ),
       ),
     );
   }
-
 }
 
 class KeyButton extends StatelessWidget {
-  KeyButton({Key? key, required this.buttonName}) : super(key: key);
+  KeyButton({Key? key, required this.buttonName, required this.callback}) : super(key: key);
   final String buttonName;
-
-  Widget build(BuildContext build){
+  final VoidCallback callback;
+  // Read https://stackoverflow.com/questions/54493002/pass-method-as-parameter-to-a-widget
+  Widget build(BuildContext build) {
     return Container(
-      alignment: Alignment.center,
-      margin: const EdgeInsets.all(10.0),
-      height: 60.0,
-      width: 40.0,
-      child: Text(this.buttonName,
-          style: TextStyle( fontSize: 30)
-      ),
+        alignment: Alignment.center,
+        margin: const EdgeInsets.all(10.0),
+        height: 60.0,
+        width: 40.0,
+        color: Colors.blue,
+        child: TextButton(
+          child: Text(
+            this.buttonName,
+            style: TextStyle(fontSize: 30, color: Colors.grey[200]),
+          ),
+//        onPressed: () => callback
+          onPressed: callback
+          ,)
     );
   }
 }
