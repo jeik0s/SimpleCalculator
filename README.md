@@ -8,4 +8,4 @@ Simple app for simple calulations
 <br />
 <br /> FLUT-2 Functionality ✔
 <br />
-<img src="readme/mr2.png">
+<img src="readme/mr2.gif">
