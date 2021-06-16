@@ -4,8 +4,8 @@ Simple app for simple calulations
 <br />
 <br /> FLUT-1 Layout ✔
 <br />
-<img src="readme/mr1.png">
+<img src="readme/flut5.png">
 <br />
 <br /> FLUT-2 Functionality ✔
 <br />
-<img src="readme/mr2.gif">
+<img src="readme/flut4.gif">
