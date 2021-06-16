@@ -2,10 +2,10 @@
 Simple app for simple calulations
 
 <br />
-<br /> FLUT-1 Layout ✔
+<br /> FLUT-5 Layout ✔
 <br />
 <img src="readme/flut5.png">
 <br />
-<br /> FLUT-2 Functionality ✔
+<br /> FLUT-4 Functionality ✔
 <br />
 <img src="readme/flut4.gif">
