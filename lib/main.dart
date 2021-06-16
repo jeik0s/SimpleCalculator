@@ -129,9 +129,12 @@ class _CalculatorCanvasState extends State<CalculatorCanvas> {
             alignment: Alignment.centerRight,
             width: double.infinity,
             color: Colors.yellow[50],
-            child: Text(
-              "$calcScreen",
-              style: TextStyle(fontSize: 25),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: Text(
+                "$calcScreen",
+                style: TextStyle(fontSize: 25),
+              ),
             ),
           ),
         ),
