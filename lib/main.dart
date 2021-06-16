@@ -8,109 +8,145 @@ class SimpleCalculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Simple calculator',
-      home: CalculatorCanvas(
-        appTitle: 'Simple calculator',
+      home: Scaffold(
+        body: SafeArea(child: CalculatorCanvas()),
       ),
     );
   }
 }
 
 class CalculatorCanvas extends StatefulWidget {
-  CalculatorCanvas({Key? key, required this.appTitle}) : super(key: key);
-
-  final String appTitle;
+  @override
   _CalculatorCanvasState createState() => _CalculatorCanvasState();
 }
 
 class _CalculatorCanvasState extends State<CalculatorCanvas> {
-  Widget KeyButton({required String buttonName}) => Expanded(
-        child: Container(
-            alignment: Alignment.center,
-            margin: const EdgeInsets.all(1.0),
-            color: Colors.blue,
-            child: TextButton(
-              child: Text(
-                buttonName,
-                style: TextStyle(fontSize: 30, color: Colors.grey[200]),
-              ),
-              onPressed: () {
-                print("clicked $buttonName");
-              },
-            )),
-      );
+  String userInput1 = "";
+  String userInput2 = "";
+  String userSymbol = "";
+  String calcScreen = "";
+
+  bool checkIfNumeric({required String value}) {
+    try {
+      int.parse(value);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void calculate({required String userInputValue}) {
+    setState(() {
+      if (checkIfNumeric(value: userInputValue) && userSymbol == "") {
+        userInput1 = userInput1 + userInputValue;
+        calcScreen = calcScreen + userInputValue;
+      } else if (checkIfNumeric(value: userInputValue) && userSymbol != "") {
+        userInput2 = userInput2 + userInputValue;
+        calcScreen = calcScreen + userInputValue;
+      } else if (!checkIfNumeric(value: userInputValue) &&
+          userSymbol == "" &&
+          userInputValue != "C" &&
+          userInputValue != "=") {
+        userSymbol = userInputValue;
+        calcScreen = calcScreen + userInputValue;
+      } else if (!checkIfNumeric(value: userInputValue) &&
+          userInputValue == "C") {
+        userInput1 = "";
+        userInput2 = "";
+        userSymbol = "";
+        calcScreen = "";
+      } else if (userInputValue == "=" &&
+          userInput1 != "" &&
+          userInput2 != "" &&
+          userSymbol != "") {
+        print("suma");
+        if (userSymbol == "+") {
+          calcScreen =
+              (int.parse(userInput1) + int.parse(userInput2)).toString();
+          userInput2 = "";
+          userSymbol = "";
+          userInput1 = calcScreen;
+        } else if (userSymbol == "-") {
+          calcScreen =
+              (int.parse(userInput1) - int.parse(userInput2)).toString();
+          userInput2 = "";
+          userSymbol = "";
+          userInput1 = calcScreen;
+        } else if (userSymbol == "*") {
+          calcScreen =
+              (int.parse(userInput1) * int.parse(userInput2)).toString();
+          userInput2 = "";
+          userSymbol = "";
+          userInput1 = calcScreen;
+        } else if (userSymbol == "/") {
+          calcScreen = ((int.parse(userInput1) / int.parse(userInput2)).round())
+              .toString();
+          userInput2 = "";
+          userSymbol = "";
+          userInput1 = calcScreen;
+        }
+      }
+    });
+  }
+
+  Widget buildKey({required String keyValue}) => TextButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.blue[100]),
+      ),
+      onPressed: () {
+        calculate(userInputValue: keyValue);
+      },
+      child: Container(
+        child: Text("$keyValue"),
+      )
+  );
+
+  Widget buildRowPad(List<String> padNumbers) {
+    Widget rowPad = Expanded(
+      flex: 1,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Expanded(child: buildKey(keyValue: padNumbers[0])),
+          Expanded(child: buildKey(keyValue: padNumbers[1])),
+          Expanded(child: buildKey(keyValue: padNumbers[2])),
+          Expanded(child: buildKey(keyValue: padNumbers[3])),
+        ],
+      ),
+    );
+
+    return rowPad;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: Container(
+            alignment: Alignment.centerRight,
+            width: double.infinity,
+            color: Colors.yellow[50],
+            child: Text(
+              "$calcScreen",
+              style: TextStyle(fontSize: 25),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 15,
           child: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Container(
-                color: Colors.yellow[200],
-                height: 70.0,
-                width: double.infinity,
-              ),
-            ),
+            children: <Widget>[
+              buildRowPad(["9", "8", "7", "+"]),
+              buildRowPad(["6", "5", "4", "-"]),
+              buildRowPad(["3", "2", "1", "*"]),
+              buildRowPad(["0", "=", "C", "/"]),
+            ],
           ),
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      KeyButton(buttonName: "9"),
-                      KeyButton(buttonName: "8"),
-                      KeyButton(buttonName: "7"),
-                      KeyButton(buttonName: "+"),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      KeyButton(buttonName: "6"),
-                      KeyButton(buttonName: "5"),
-                      KeyButton(buttonName: "4"),
-                      KeyButton(buttonName: "-"),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      KeyButton(buttonName: "3"),
-                      KeyButton(buttonName: "2"),
-                      KeyButton(buttonName: "1"),
-                      KeyButton(buttonName: "*"),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      KeyButton(buttonName: "0"),
-                      KeyButton(buttonName: "="),
-                      KeyButton(buttonName: "C"),
-                      KeyButton(buttonName: "/"),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      )),
+        ),
+      ],
     );
   }
 }
